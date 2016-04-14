@@ -751,7 +751,46 @@ class Coupon(CreateableAPIResource, UpdateableAPIResource,
 
 
 class Event(ListableAPIResource):
-    pass
+
+    @classmethod
+    def verify(cls, json_payload, api_key=None):
+        try:
+            event_dict = util.json.loads(json_payload)
+        except:
+            raise error.EventVerificationError(
+                "Could not decode event's JSON payload",
+                json_body=json_payload)
+
+        account_id = event_dict.get('stripe_user_id', None)
+        event = cls.construct_from(event_dict, key=api_key,
+                                   stripe_account=account_id)
+
+        if event.type == 'account.application.deauthorized':
+            # This event cannot be verified normally: if it is legit, then we
+            # can no longer fetch it from the account, as we are no longer
+            # authorized to issue requests on behalf of this account.
+            # So we "cheat" and try to retrieve the account instead. If it
+            # fails, the event was legit.
+            # This isn't ideal, because AuthenticationError can be raised in
+            # other cases (e.g. wrong API key), but it's the best we can do.
+            try:
+                Account.retrieve(account_id)
+            except error.AuthenticationError:
+                return event
+
+            raise error.EventVerificationError(
+                "Received 'account.application.deauthorized' event %s, but "
+                "still able to access account %s" % (event.id, account_id))
+
+        # General case: verify the event by fetching it from Stripe
+        try:
+            event.refresh()
+        except error.InvalidRequestError:
+            raise error.EventVerificationError(
+                "Failed to verify event %s of type '%s'" % (event.id,
+                                                            event.type))
+
+        return event
 
 
 class Transfer(CreateableAPIResource, UpdateableAPIResource,

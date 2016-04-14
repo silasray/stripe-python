@@ -114,6 +114,100 @@ SAMPLE_INVOICE = stripe.util.json.loads("""
 }
 """)
 
+SAMPLE_EVENT_PAYLOAD = """{
+  "api_version": "2016-03-07",
+  "created": 1460636017,
+  "data": {
+    "object": {
+      "amount": 200,
+      "amount_refunded": 0,
+      "application_fee": null,
+      "balance_transaction": "txn_000000000000000000000000",
+      "captured": true,
+      "created": 1460636017,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "destination": null,
+      "dispute": null,
+      "failure_code": null,
+      "failure_message": null,
+      "fraud_details": {},
+      "id": "ch_000000000000000000000000",
+      "invoice": null,
+      "livemode": false,
+      "metadata": {},
+      "object": "charge",
+      "order": null,
+      "paid": true,
+      "receipt_email": null,
+      "receipt_number": null,
+      "refunded": false,
+      "refunds": {
+        "data": [],
+        "has_more": false,
+        "object": "list",
+        "total_count": 0,
+        "url": "/v1/charges/ch_000000000000000000000000/refunds"
+      },
+      "shipping": null,
+      "source": {
+        "address_city": null,
+        "address_country": null,
+        "address_line1": null,
+        "address_line1_check": null,
+        "address_line2": null,
+        "address_state": null,
+        "address_zip": null,
+        "address_zip_check": null,
+        "brand": "Visa",
+        "country": "US",
+        "customer": null,
+        "cvc_check": "pass",
+        "dynamic_last4": null,
+        "exp_month": 4,
+        "exp_year": 2017,
+        "fingerprint": "NrVafqTONZfbLkQK",
+        "funding": "credit",
+        "id": "card_000000000000000000000000",
+        "last4": "4242",
+        "metadata": {},
+        "name": null,
+        "object": "card",
+        "tokenization_method": null
+      },
+      "source_transfer": null,
+      "statement_descriptor": null,
+      "status": "succeeded"
+    }
+  },
+  "id": "evt_000000000000000000000000",
+  "livemode": false,
+  "object": "event",
+  "pending_webhooks": 0,
+  "request": "req_00000000000000",
+  "type": "charge.succeeded"
+}"""
+
+SAMPLE_EVENT_DEAUTH_PAYLOAD = """{
+  "api_version": null,
+  "created": 1448270796,
+  "data": {
+    "object": {
+      "id": "ca_00000000000000000000000000000000",
+      "name": "Sample Connect Application",
+      "object": "application"
+    }
+  },
+  "id": "evt_000000000000000000000000",
+  "livemode": true,
+  "object": "event",
+  "pending_webhooks": 0,
+  "request": null,
+  "stripe_user_id": "acct_0000000000000000",
+  "type": "account.application.deauthorized"
+}"""
+
 
 class StripeTestCase(unittest2.TestCase):
     RESTORE_ATTRIBUTES = ('api_version', 'api_key')

@@ -72,3 +72,7 @@ class AuthenticationError(StripeError):
 
 class RateLimitError(StripeError):
     pass
+
+
+class EventVerificationError(StripeError):
+    pass
