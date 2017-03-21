@@ -118,6 +118,13 @@ SAMPLE_INVOICE = stripe.util.json.loads("""
 }
 """)
 
+SAMPLE_WEBHOOK_PAYLOAD = """{
+  "id": "evt_test_webhook",
+  "object": "event"
+}"""
+
+SAMPLE_WEBHOOK_SECRET = 'hunter2'
+
 
 class StripeTestCase(unittest2.TestCase):
     RESTORE_ATTRIBUTES = ('api_version', 'api_key', 'client_id')

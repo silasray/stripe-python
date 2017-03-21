@@ -58,6 +58,9 @@ from stripe.resource import (  # noqa
 # OAuth
 from stripe.oauth import OAuth  # noqa
 
+# Webhooks
+from stripe.webhook import Webhook, WebhookSignature  # noqa
+
 # Error imports.  Note that we may want to move these out of the root
 # namespace in the future and you should prefer to access them via
 # the fully qualified `stripe.error` module.
